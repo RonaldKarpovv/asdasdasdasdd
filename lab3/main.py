@@ -4,8 +4,7 @@ def bfs(graph, start):
     q = queue.Queue()
     # добавляем начальную вершину в очередь
     q.put(start)
-    # создаем словарь для хранения расстояний от начальной вершины
-    # до остальных вершин графа
+    # создаем словарь для хранения расстояний от начальной вершины до остальных вершин графа
     distances = {start: 0}
     # выполняем обход в ширину
     while not q.empty():
@@ -20,14 +19,12 @@ def bfs(graph, start):
                     # добавляем ее в очередь и вычисляем расстояние
                     q.put(neighbor)
                     distances[neighbor] = distances[current] + 1
-    # возвращаем словарь расстояний
     return distances
-# читаем матрицу смежности из файла
+
 with open('graph.txt') as f:
     lines = f.readlines()
     # преобразуем строки в числа
     matrix = [[int(x) for x in line.split()] for line in lines]
-# вызываем функцию поиска кратчайшего пути
 distances = bfs(matrix, 0)
 # выводим расстояния до всех вершин графа
 for vertex, distance in distances.items():
