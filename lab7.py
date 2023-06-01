@@ -1,18 +1,29 @@
-import heapq
-def prim(graph, start):
-    # Создаем множество посещенных вершин и очередь с приоритетом
-    visited, heap = set(), [(0, start)]
-    # Пока в очереди с приоритетом есть элементы
-    while heap:
-        # Извлекаем минимальный вес и вершину с очереди с приоритетом
-        (weight, vertex) = heapq.heappop(heap)
-        # Если вершина еще не посещена
-        if vertex not in visited:
-            # Добавляем ее в посещенные
-            visited.add(vertex)
-            # Добавляем в очередь с приоритетом все смежные вершины
-            for neighbor, neighbor_weight in graph[vertex].items():
-                if neighbor not in visited:
-                    heapq.heappush(heap, (neighbor_weight, neighbor))
-    # Возвращаем множество посещенных вершин
-    return visited
+import sys
+def read_matrix(filename):
+    with open(filename) as f:
+        lines = f.readlines()
+    matrix = []
+    for line in lines:
+        row = [int(x) for x in line.strip().split()]
+        matrix.append(row)
+    return matrix
+def prim(matrix):
+    n = len(matrix)
+    visited = [False] * n
+    key = [sys.maxsize] * n
+    parent = [None] * n
+    key[0] = 0
+    for _ in range(n):
+        u = min((i for i in range(n) if not visited[i]), key=lambda x: key[x])
+        visited[u] = True
+        for v in range(n):
+            if matrix[u][v] and not visited[v] and matrix[u][v] < key[v]:
+                key[v] = matrix[u][v]
+                parent[v] = u
+    return [(parent[i], i) for i in range(1, n)]
+#filename = 'matrix.txt'
+#matrix = read_matrix(filename)
+matrix = [[0, 1, 1, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 1, 1], [1, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
+edges = prim(matrix)
+for u, v in edges:
+    print(u, '-', v)
